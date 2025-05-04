@@ -2,9 +2,10 @@
 
 ## Authors
 
-- Atharva Jamsandekar  
-- Shubhankar Katekari
-- Nikhil Gutlapalli
+- Atharva Jamsandekar ([AtharvaJ11](https://github.com/AtharvaJ11))  
+- Shubhankar Katekari ([ShubhankarKatekari](https://github.com/ShubhankarKatekari))  
+- Nikhil Gutlapalli ([GutlapalliNikhil](https://github.com/GutlapalliNikhil))  
+
 
 ## Project Description
 

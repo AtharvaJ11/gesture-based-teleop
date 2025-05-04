@@ -173,6 +173,9 @@ class ArmFingerNode(Node):
                 self.stop_camera()
                 status_msg = Bool(data=True)
                 self.joint_status_pub.publish(status_msg)
+                zero_vel =Twist()
+                self.cmd_vel_pub.publish(zero_vel)
+                print(zero_vel)
                 self.get_logger().info("[ArmFingerNode] Published True on /joint_status.")
                 return  # skip further processing
 
@@ -192,8 +195,12 @@ class ArmFingerNode(Node):
 
             # publish to /cmd_vel
             twist_msg = Twist()
+            if abs(norm_y)<0.1:
+            	norm_y=0.0
+            if abs(norm_x)<0.1:
+            	norm_x=0.0
             twist_msg.linear.x = float(norm_y)
-            twist_msg.angular.z = float(norm_x)
+            twist_msg.angular.z = -float(norm_x)
             self.cmd_vel_pub.publish(twist_msg)
 
             self.get_logger().info(
@@ -218,8 +225,12 @@ class ArmFingerNode(Node):
                 val = self.get_arm_extension_value(pose_result.pose_landmarks.landmark, w, h)
                 if val is not None:
                     # Publish this 0..1 value (in steps of 0.1) to all four topics
-                    self.get_logger().info(f"Arm Stretch/Retract => /joint_arm_l3.. => {val:.1f}")
+                    val = 1.0 -val
+                    val*=0.2
+                    self.get_logger().info(f"Arm Stretch/Retract => /joint_arm_l3.. => {val:.2f}")
+                   
                     msg_f = Float64(data=val)
+                    
                     self.joint_arm_l3_pub.publish(msg_f)
                     self.joint_arm_l2_pub.publish(msg_f)
                     self.joint_arm_l1_pub.publish(msg_f)
